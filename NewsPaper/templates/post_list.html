@@ -1,0 +1,40 @@
+<!--  наследуемся от шаблона default.html, который мы создавали для flatpages -->
+<--  наследуемся от шаблона default.html, который мы создавали для flatpages -->
+{% extends 'flatpages/default.html' %}
+{% load custom_filters %}
+<!-- Название у нас будет products -->
+{% block title %}
+Новости
+{% endblock title %}
+
+<!-- В контенте на странице мы выводим все товары -->
+{% block content %}
+   <h1>Все новости</h1>
+   <p><strong>Общее количество новостей:</strong> {{ posts|length }}</p>
+   <!-- Выводим товары, только если они есть с помощью тега if -->
+   <!-- Используем переданную из представления переменную time_now
+   и применяем к ней фильтр date. По назначению этот фильтр очень похож
+   на метод strftime у объекта datetime в Python — вывод времени
+   в указанном формате. -->
+   <h3>{{ time_now|date:'M d Y' }}</h3>
+   <hr>
+   {% if posts %}
+   <table>
+    <tr>
+        <td>Заголовок</td>
+        <td>Время</td>
+        <td>Содержание</td>
+        
+        {% for post in posts %}
+        <tr>
+            <td>{{ post.title }}</td>
+            <td>{{ post.date_in|date:"d M Y H:i:s" }}</td> <!-- Формат даты для каждой новости -->
+            <td>{{ post.post_text|truncatewords:20|censor }}</td>
+          
+        </tr>
+        {% endfor %}
+   {% else %}
+       <!-- Если товаров нет, говорим, что товаров нет ;) -->
+       <h2>Новостей нет!</h2>
+   {% endif %}
+{% endblock content %}
