@@ -13,6 +13,7 @@ class PostList(ListView):
     # Это имя списка, в котором будут лежать все объекты.
     # Его надо указать, чтобы обратиться к списку объектов в html-шаблоне.
     context_object_name = 'posts'
+    paginate_by = 10
 
     def get_context_data(self, **kwargs):
         # С помощью super() мы обращаемся к родительским классам
