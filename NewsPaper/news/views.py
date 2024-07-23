@@ -1,7 +1,9 @@
 from datetime import datetime
+from typing import Any
+from django.db.models.query import QuerySet
 from django.views.generic import ListView, DetailView
 from .models import Post
-
+from .filters import PostFilter
 
 class PostList(ListView):
     # Указываем модель, объекты которой мы будем выводить
@@ -42,3 +44,27 @@ class PostDetail(DetailView):
         context = super().get_context_data(**kwargs)
         context['time_now'] = datetime.utcnow()  # Добавляет текущую UTC дату и время
         return context
+
+
+class PostSearch(ListView):
+    # Указываем модель, объекты которой мы будем выводить
+    model = Post
+    # Поле, которое будет использоваться для сортировки объектов
+    # Указываем имя шаблона, в котором будут все инструкции о том,
+    # как именно пользователю должны быть показаны наши объекты
+    template_name = 'post_search.html'
+    # Это имя списка, в котором будут лежать все объекты.
+    # Его надо указать, чтобы обратиться к списку объектов в html-шаблоне.
+    context_object_name = 'posts'
+    paginate_by = 10
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        self.filterest = PostFilter(self.request.GET , queryset)
+        return self.filterset.qs
+     
+    def get_context_data(self, **kwargs):
+       context = super().get_context_data(**kwargs)
+       # Добавляем в контекст объект фильтрации.
+       context['filterset'] = self.filterset
+       return context
