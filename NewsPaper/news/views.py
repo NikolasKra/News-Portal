@@ -30,6 +30,7 @@ class PostList(ListView):
         # чтобы на её примере рассмотреть работу ещё одного фильтра.
         context['next_sale'] = None
         return context
+    
 
 
 class PostDetail(DetailView):
@@ -73,24 +74,56 @@ class PostSearch(ListView):
 class PostCreate(CreateView):
     form_class = PostForm
     model = Post
-    template_name = 'post_create.html'
+    
+
+    def get_template_names(self):
+        if self.request.path == '/news/articles/create/':
+            return 'post_article_create.html'
+        return'post_create.html'
+
     def form_valid(self, form):
         
         post = form.save(commit=False)
-        post.choice = 'NW'
+        if self.request.path == '/news/articles/create/':
+
+            post.choice = 'AR'
         post.save()
         return super().form_valid(form)
 
 class PostUpdate(UpdateView):
     form_class = PostForm
     model = Post
-    template_name = 'post_update.html'
+    
+
+    def get_template_names(self):
+        if self.request.path == '/articles/<int:pk>/edit/':
+            return 'post_articles_update.html'
+        return'post_update.html'
+    
+    def form_valid(self, form):
+        
+        post = form.save(commit=False)
+        if self.request.path == '/articles/<int:pk>/edit/':
+
+            post.choice = 'AR'
+        post.save()
+        return super().form_valid(form)
 
 class PostDelete(DeleteView):
     model = Post
-    template_name = 'post_delete.html'
+    
 
-    class ArticlesUpdate( UpdateView):
-        form_class = PostForm
-        model = Post
-        template_name = 'post_articles_update.html'
+    def get_template_names(self):
+        if self.request.path == '/articles/<int:pk>/delete/':
+            return 'post_articles_delete.html'
+        return'post_delete.html'
+    
+    def form_valid(self, form):
+        
+        post = form.save(commit=False)
+        if self.request.path == '/articles/<int:pk>/delete/':
+
+            post.choice = 'AR'
+        post.save()
+        return super().form_valid(form)
+
