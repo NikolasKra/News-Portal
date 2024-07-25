@@ -1,9 +1,10 @@
 from datetime import datetime
 from typing import Any
 from django.db.models.query import QuerySet
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView , CreateView, UpdateView , DeleteView
 from .models import Post
 from .filters import PostFilter
+from .forms import PostForm
 
 class PostList(ListView):
     # Указываем модель, объекты которой мы будем выводить
@@ -60,7 +61,7 @@ class PostSearch(ListView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        self.filterest = PostFilter(self.request.GET , queryset)
+        self.filterset = PostFilter(self.request.GET , queryset = queryset )
         return self.filterset.qs
      
     def get_context_data(self, **kwargs):
@@ -68,3 +69,28 @@ class PostSearch(ListView):
        # Добавляем в контекст объект фильтрации.
        context['filterset'] = self.filterset
        return context
+
+class PostCreate(CreateView):
+    form_class = PostForm
+    model = Post
+    template_name = 'post_create.html'
+    def form_valid(self, form):
+        
+        post = form.save(commit=False)
+        post.choice = 'NW'
+        post.save()
+        return super().form_valid(form)
+
+class PostUpdate(UpdateView):
+    form_class = PostForm
+    model = Post
+    template_name = 'post_update.html'
+
+class PostDelete(DeleteView):
+    model = Post
+    template_name = 'post_delete.html'
+
+    class ArticlesUpdate( UpdateView):
+        form_class = PostForm
+        model = Post
+        template_name = 'post_articles_update.html'

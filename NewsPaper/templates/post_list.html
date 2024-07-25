@@ -24,13 +24,14 @@
         <td>Заголовок</td>
         <td>Время</td>
         <td>Содержание</td>
+        <td>Тип публикации</td>
         
         {% for post in posts %}
         <tr>
             <td>{{ post.title }}</td>
             <td>{{ post.date_in|date:"d M Y H:i:s" }}</td> <!-- Формат даты для каждой новости -->
             <td>{{ post.post_text|truncatewords:20|censor }}</td>
-          
+            <td>{{ post.choice }}</td>
         </tr>
         {% endfor %}
    </table>
