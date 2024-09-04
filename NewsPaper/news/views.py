@@ -7,6 +7,8 @@ from .filters import PostFilter
 from .forms import PostForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+
+
 class PostList(ListView):
     # Указываем модель, объекты которой мы будем выводить
     model = Post
@@ -109,6 +111,8 @@ class PostUpdate(LoginRequiredMixin, UpdateView):
             post.choice = 'AR'
         post.save()
         return super().form_valid(form)
+    
+  
 
 class PostDelete(DeleteView):
     model = Post
@@ -128,3 +132,5 @@ class PostDelete(DeleteView):
         post.save()
         return super().form_valid(form)
 
+    
+    

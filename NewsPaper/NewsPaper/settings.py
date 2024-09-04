@@ -46,10 +46,20 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.yandex',
+    'sign',
+    'protect'
     ]
 SITE_ID = 1
-LOGIN_URL = '/accounts/login/'
-
+LOGIN_URL = 'sign/login/'
+#LOGIN_URL = '/accounts/login/'
+ACCOUNT_FORMS = {'signup': 'news.models.BasicSignupForm'}
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+LOGIN_REDIRECT_URL = '/news/'
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
