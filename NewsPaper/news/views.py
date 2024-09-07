@@ -1,11 +1,11 @@
 from datetime import datetime
 from typing import Any
 from django.db.models.query import QuerySet
-from django.views.generic import ListView, DetailView , CreateView, UpdateView , DeleteView
+from django.views.generic import ListView, DetailView , CreateView, UpdateView , DeleteView 
 from .models import Post
 from .filters import PostFilter
 from .forms import PostForm
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 
 
 
@@ -32,6 +32,7 @@ class PostList(ListView):
         # Добавим ещё одну пустую переменную,
         # чтобы на её примере рассмотреть работу ещё одного фильтра.
         context['next_sale'] = None
+        context['is_not_authors'] = not self.request.user.groups.filter(name = 'authors').exists()
         return context
     
 
@@ -74,10 +75,10 @@ class PostSearch(ListView):
        context['filterset'] = self.filterset
        return context
 
-class PostCreate(CreateView):
+class PostCreate(PermissionRequiredMixin,CreateView):
     form_class = PostForm
     model = Post
-    
+    permission_required = 'myapp.add_post'
 
     def get_template_names(self):
         if self.request.path == '/news/articles/create/':
@@ -93,10 +94,10 @@ class PostCreate(CreateView):
         post.save()
         return super().form_valid(form)
 
-class PostUpdate(LoginRequiredMixin, UpdateView):
+class PostUpdate(LoginRequiredMixin,PermissionRequiredMixin, UpdateView):
     form_class = PostForm
     model = Post
-    
+    permission_required = 'myapp.add_postupdate'
 
     def get_template_names(self):
         if self.request.path == '/articles/<int:pk>/edit/':
@@ -114,9 +115,9 @@ class PostUpdate(LoginRequiredMixin, UpdateView):
     
   
 
-class PostDelete(DeleteView):
+class PostDelete(DeleteView,PermissionRequiredMixin):
     model = Post
-    
+    permission_required = 'myapp.add_postdelete'
 
     def get_template_names(self):
         if self.request.path == '/articles/<int:pk>/delete/':
