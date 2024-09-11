@@ -2,11 +2,15 @@ from datetime import datetime
 from typing import Any
 from django.db.models.query import QuerySet
 from django.views.generic import ListView, DetailView , CreateView, UpdateView , DeleteView 
-from .models import Post
+from .models import Post, Category
 from .filters import PostFilter
 from .forms import PostForm
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-
+from django.shortcuts import redirect
+from django.contrib.auth import get_user_model
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404
+from django.shortcuts import render
 
 
 class PostList(ListView):
@@ -134,4 +138,27 @@ class PostDelete(DeleteView,PermissionRequiredMixin):
         return super().form_valid(form)
 
     
+class CategoryListView(PostList):
+    model = Post
+    template_name = 'subscriber/category_list.html' 
+    context_object_name = 'category_new_list'
+
+    def get_queryset(self):
+        self.category = get_object_or_404(Category, id =self.kwargs ['pk'])
+        queryset = Post.objects.filter(category = self.category).order_by('-created_at')
+        return queryset
     
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['is_not_subscriber']* self.request.user not in self.category.subscribers.all()
+        context['category'] = self.category
+        return context
+
+@login_required
+def subscribe(request , pk):
+    user = request.user
+    category = Category.objects.get(id=pk)
+    category.subscribers.add(user)
+
+    massage = 'Вы успешно подписались на рассылку новостей категории'
+    return render(request,'news/subscribe.html',{'category':category,'massage':massage})     

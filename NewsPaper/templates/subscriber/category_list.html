@@ -1,0 +1,133 @@
+<!--  наследуемся от шаблона default.html, который мы создавали для flatpages -->
+<--  наследуемся от шаблона default.html, который мы создавали для flatpages -->
+{% extends 'flatpages/default.html' %}
+{% load custom_filters %}
+<!-- Название у нас будет products -->
+{% block title %}
+Новости
+{% endblock title %}
+
+<!-- В контенте на странице мы выводим все товары -->
+{% block content %}
+   <h1>Все новости</h1>
+   <p><strong>Общее количество новостей:</strong> {{ posts|length }}</p>
+   <!-- Выводим товары, только если они есть с помощью тега if -->
+   <!-- Используем переданную из представления переменную time_now
+   и применяем к ней фильтр date. По назначению этот фильтр очень похож
+   на метод strftime у объекта datetime в Python — вывод времени
+   в указанном формате. -->
+   <h3>{{ time_now|date:'M d Y' }}</h3>
+   <hr>
+   {% if <!--  наследуемся от шаблона default.html, который мы создавали для flatpages -->
+<--  наследуемся от шаблона default.html, который мы создавали для flatpages -->
+{% extends 'flatpages/default.html' %}
+{% load custom_filters %}
+<!-- Название у нас будет products -->
+{% block title %}
+Новости
+{% endblock title %}
+
+<!-- В контенте на странице мы выводим все товары -->
+{% block content %}
+   <h1>Все новости</h1>
+   <p><strong>Общее количество новостей:</strong> {{ posts|length }}</p>
+   <!-- Выводим товары, только если они есть с помощью тега if -->
+   <!-- Используем переданную из представления переменную time_now
+   и применяем к ней фильтр date. По назначению этот фильтр очень похож
+   на метод strftime у объекта datetime в Python — вывод времени
+   в указанном формате. -->
+   <h3>{{ time_now|date:'M d Y' }}</h3>
+   <hr>
+   {% if category_new_list %}
+   <table>
+    <tr>
+        <td>Заголовок</td>
+        <td>Время</td>
+        <td>Содержание</td>
+        <td>Тип публикации</td>
+        <td>Категории</td>
+        {% for post in category_new_list %}
+        <tr>
+            <td>{{ post.title }}</td>
+            <td>{{ post.date_in|date:"d M Y H:i:s" }}</td> <!-- Формат даты для каждой новости -->
+            <td>{{ post.post_text|truncatewords:20|censor }}</td>
+            <td>{{ post.choice }}</td>
+        </tr>
+        {% endfor %}
+   </table>
+   {% else %}
+       <!-- Если товаров нет, говорим, что товаров нет ;) -->
+       <h2>Новостей нет!</h2>
+   {% endif %}
+   {# Добавляем пагинацию на страницу #}
+
+   {# Информация о предыдущих страницах #}
+   {% if page_obj.has_previous %}
+       <a href="?page=1">1</a>
+       {% if page_obj.previous_page_number != 1 %}
+           ...
+           <a href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
+       {% endif %}
+   {% endif %}
+
+   {# Информация о текущей странице #}
+   {{ page_obj.number }}
+
+   {# Информация о следующих страницах #}
+   {% if page_obj.has_next %}
+       <a href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
+       {% if paginator.num_pages != page_obj.next_page_number %}
+           ...
+           <a href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
+       {% endif %}
+   {% endif %}
+   {% if is_not_authors %}
+<button> <a href="/sign/upgrade/"> Стать автором </a> </button>
+{% endif %}
+{% endblock content %} %}
+   <table>
+    <tr>
+        <td>Заголовок</td>
+        <td>Время</td>
+        <td>Содержание</td>
+        <td>Тип публикации</td>
+        
+        {% for post in posts %}
+        <tr>
+            <td>{{ post.title }}</td>
+            <td>{{ post.date_in|date:"d M Y H:i:s" }}</td> <!-- Формат даты для каждой новости -->
+            <td>{{ post.post_text|truncatewords:20|censor }}</td>
+            <td>{{ post.choice }}</td>
+        </tr>
+        {% endfor %}
+   </table>
+   {% else %}
+       <!-- Если товаров нет, говорим, что товаров нет ;) -->
+       <h2>Новостей нет!</h2>
+   {% endif %}
+   {# Добавляем пагинацию на страницу #}
+
+   {# Информация о предыдущих страницах #}
+   {% if page_obj.has_previous %}
+       <a href="?page=1">1</a>
+       {% if page_obj.previous_page_number != 1 %}
+           ...
+           <a href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
+       {% endif %}
+   {% endif %}
+
+   {# Информация о текущей странице #}
+   {{ page_obj.number }}
+
+   {# Информация о следующих страницах #}
+   {% if page_obj.has_next %}
+       <a href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
+       {% if paginator.num_pages != page_obj.next_page_number %}
+           ...
+           <a href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
+       {% endif %}
+   {% endif %}
+   {% if is_not_authors %}
+<button> <a href="/sign/upgrade/"> Стать автором </a> </button>
+{% endif %}
+{% endblock content %}
