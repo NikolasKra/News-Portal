@@ -91,13 +91,19 @@
         <td>Время</td>
         <td>Содержание</td>
         <td>Тип публикации</td>
+        <td>Категории</td>
         
-        {% for post in posts %}
+        {% for post in category_new_list  %}
         <tr>
             <td>{{ post.title }}</td>
             <td>{{ post.date_in|date:"d M Y H:i:s" }}</td> <!-- Формат даты для каждой новости -->
             <td>{{ post.post_text|truncatewords:20|censor }}</td>
             <td>{{ post.choice }}</td>
+            <td>
+                {%for category in post.category.all%}
+                <a href="{% url'category_list' category.id %}">{{category}}</a>
+                {% endfor %}
+            </td>
         </tr>
         {% endfor %}
    </table>
@@ -126,6 +132,8 @@
            ...
            <a href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
        {% endif %}
+       {% if is_not_subscriber %}
+       <h1 class="text-center"><a href="{% url'subscribe' category.id %}">class= "<button>Подписаться</a></button></h1>
    {% endif %}
    {% if is_not_authors %}
 <button> <a href="/sign/upgrade/"> Стать автором </a> </button>
