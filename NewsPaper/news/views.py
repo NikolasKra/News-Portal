@@ -140,17 +140,17 @@ class PostDelete(DeleteView,PermissionRequiredMixin):
     
 class CategoryListView(PostList):
     model = Post
-    template_name = 'subscriber/category_list.html' 
+    template_name = 'subscribe/category_list.html' 
     context_object_name = 'category_new_list'
 
     def get_queryset(self):
         self.category = get_object_or_404(Category, id =self.kwargs ['pk'])
-        queryset = Post.objects.filter(category = self.category).order_by('-created_at')
+        queryset = Post.objects.filter(category = self.category).order_by('-date_in')
         return queryset
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['is_not_subscriber']* self.request.user not in self.category.subscribers.all()
+        context['is_not_subscriber'] = self.request.user not in self.category.subscribers.all()
         context['category'] = self.category
         return context
 
@@ -161,4 +161,4 @@ def subscribe(request , pk):
     category.subscribers.add(user)
 
     massage = 'Вы успешно подписались на рассылку новостей категории'
-    return render(request,'news/subscribe.html',{'category':category,'massage':massage})     
+    return render(request,'news/subscribe/subscribe.html',{'category':category,'massage':massage})     

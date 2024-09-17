@@ -7,6 +7,7 @@
 Новости
 {% endblock title %}
 
+
 <!-- В контенте на странице мы выводим все товары -->
 {% block content %}
    <h1>Все новости</h1>
@@ -18,23 +19,26 @@
    в указанном формате. -->
    <h3>{{ time_now|date:'M d Y' }}</h3>
    <hr>
-   {% if posts %}
+   {% if category_new_list %}
    <table>
     <tr>
         <td>Заголовок</td>
         <td>Время</td>
         <td>Содержание</td>
         <td>Тип публикации</td>
-        <td>категория</td>
-        {% for post in posts %}
+        <td>Категории</td>
+        
+        {% for post in category_new_list  %}
         <tr>
             <td>{{ post.title }}</td>
             <td>{{ post.date_in|date:"d M Y H:i:s" }}</td> <!-- Формат даты для каждой новости -->
             <td>{{ post.post_text|truncatewords:20|censor }}</td>
             <td>{{ post.choice }}</td>
-            <td>{{ post.category.name }}</td>
-            
-
+            <td>
+                {%for category in post.category.all%}
+                <a href="{% url 'category_list' category.id %}">{{category}}</a>
+                {% endfor %}
+            </td>
         </tr>
         {% endfor %}
    </table>
@@ -51,7 +55,7 @@
            ...
            <a href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
        {% endif %}
-   {% endif %}
+    {% endif %}
 
    {# Информация о текущей странице #}
    {{ page_obj.number }}
@@ -63,8 +67,13 @@
            ...
            <a href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
        {% endif %}
+    {% endif %}
+    
+       {% if is_not_subscriber %}
+       <button><a href="{% url 'subscribe' category.id %}">Подписаться</a></button>
    {% endif %}
    {% if is_not_authors %}
 <button> <a href="/sign/upgrade/"> Стать автором </a> </button>
 {% endif %}
+
 {% endblock content %}
