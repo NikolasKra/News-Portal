@@ -161,4 +161,4 @@ def subscribe(request , pk):
     category.subscribers.add(user)
 
     massage = 'Вы успешно подписались на рассылку новостей категории'
-    return render(request,'news/subscribe/subscribe.html',{'category':category,'massage':massage})     
+    return render(request,'subscribe/subscribe.html',{'category':category,'massage':massage})     
