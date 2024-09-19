@@ -32,7 +32,11 @@
             <td>{{ post.date_in|date:"d M Y H:i:s" }}</td> <!-- Формат даты для каждой новости -->
             <td>{{ post.post_text|truncatewords:20|censor }}</td>
             <td>{{ post.choice }}</td>
-            <td>{{ post.category.name }}</td>
+            <td>
+                {%for category in post.category.all%}
+                <a href="{% url 'category_list' category.id %}">{{category}}</a>
+                {% endfor %}
+            </td>
             
 
         </tr>

@@ -9,12 +9,16 @@ class PostForm(forms.ModelForm):
 
     class Meta:
         model = Post
-        fields = ['post_author', 'title', 'post_text' ]
+        fields = ['post_author', 'title', 'post_text','category' ]
 
     def clean(self):
         cleaned_data = super().clean()
         title = cleaned_data.get("title")
         post_text = cleaned_data.get("post_text")
+        category = cleaned_data.get("category")
+
+
+
 
         if title == post_text:
             raise ValidationError(

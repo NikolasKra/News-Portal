@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 from pathlib import Path
 import os
 from dotenv import load_dotenv , find_dotenv
-load_dotenv(find_dotenv)
+load_dotenv(find_dotenv())
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -164,3 +164,4 @@ EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER') # ваше имя пользов�
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')  # пароль от почты
 EMAIL_USE_SSL = True  # Яндекс использует ssl, подробнее о том, что это, почитайте в дополнительных источниках, но включать его здесь обязательно
 DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL') 
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

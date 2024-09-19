@@ -3,8 +3,6 @@ from django.core.mail import EmailMultiAlternatives
 from django.db.models.signals import m2m_changed
 from django.dispatch import receiver
 from django.template.loader import render_to_string
-from ..NewsPaper import settings
-from ..NewsPaper.settings import  DEFAULT_FROM_EMAIL, SITE_URL
 from django.conf import settings
 from .models import PostCategory
 

@@ -82,7 +82,7 @@ class PostSearch(ListView):
 class PostCreate(PermissionRequiredMixin,CreateView):
     form_class = PostForm
     model = Post
-    permission_required = 'myapp.add_post'
+    permission_required = 'news.add_post'
 
     def get_template_names(self):
         if self.request.path == '/news/articles/create/':
@@ -101,7 +101,7 @@ class PostCreate(PermissionRequiredMixin,CreateView):
 class PostUpdate(LoginRequiredMixin,PermissionRequiredMixin, UpdateView):
     form_class = PostForm
     model = Post
-    permission_required = 'myapp.add_postupdate'
+    permission_required = 'news.change_post'
 
     def get_template_names(self):
         if self.request.path == '/articles/<int:pk>/edit/':
@@ -121,7 +121,7 @@ class PostUpdate(LoginRequiredMixin,PermissionRequiredMixin, UpdateView):
 
 class PostDelete(DeleteView,PermissionRequiredMixin):
     model = Post
-    permission_required = 'myapp.add_postdelete'
+    permission_required = 'news.delete_post'
 
     def get_template_names(self):
         if self.request.path == '/articles/<int:pk>/delete/':
