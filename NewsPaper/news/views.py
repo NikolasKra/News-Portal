@@ -11,6 +11,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render
+from django.http import HttpResponse
 
 
 class PostList(ListView):
@@ -162,3 +163,4 @@ def subscribe(request , pk):
 
     massage = 'Вы успешно подписались на рассылку новостей категории'
     return render(request,'subscribe/subscribe.html',{'category':category,'massage':massage})     
+
