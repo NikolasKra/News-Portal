@@ -11,8 +11,8 @@ app.autodiscover_tasks()
 
 app.conf.beat_schedule = {
     'email_news_every_monday_8_utra': {
-        'task': 'sajt.task.weekly_post',
-        #'schedule': crontab(hour=8, minute=0, day_of_week='monday'),
-        'schedule': crontab(hour=19, minute=00, day_of_week='Thursday'),
+        'task': 'news.tasks.weekly_post',
+        'schedule': crontab(hour=8, minute=0, day_of_week='monday'),
+        
     },
 }

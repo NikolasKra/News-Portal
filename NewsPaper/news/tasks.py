@@ -40,8 +40,8 @@ def new_post(pk):
 
 @shared_task
 def weekly_post():
-    today = datetime.datetime.now()
-    last_week = today - datetime.timedelta(days = 7)
+    today = datetime.now()
+    last_week = today - timedelta(days = 7)
     posts = Post.objects.filter(date_in__gte = last_week)
     categories = posts.values_list('category__name', flat= True)
     subscribers = set(Category.objects.filter(name__in =categories).values_list('subscribers__email',flat=True))
